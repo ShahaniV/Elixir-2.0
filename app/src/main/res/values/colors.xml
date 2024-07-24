@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    //Natural Hair colors
+    <color name="light_brown">#6D5136</color>
+    <color name="medium_brown">#523C28</color>
+    <color name="dark_brown">#37281B</color>
+
+    //Natural Eye colors
+    <color name="blue">#66B2FF</color>
+    <color name="green">#8FAC78</color>
+    <color name="hazel">#B98E68</color>
+    <color name="brown">#7E5B48</color>
+    <color name="grey">#808080</color>
+</resources>

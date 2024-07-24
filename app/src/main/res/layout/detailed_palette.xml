@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetailedPalette">
+
+    <!-- Header layout -->
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="431dp"
+        android:layout_height="52dp"
+        android:background="@drawable/bottom_shadow"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="32dp"
+            android:layout_height="28dp"
+            android:paddingLeft="10dp"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/circle_logo" />
+
+        <TextView
+            android:id="@+id/appName"
+            android:layout_width="302dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="ELIXIR"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="432dp"
+        android:layout_height="753dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/palette"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:paddingHorizontal="35dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/palette1"
+                android:layout_width="154dp"
+                android:layout_height="323dp"
+                android:layout_marginTop="100dp"
+                android:background="#00FFFFFF"
+                android:backgroundTint="#00FFFFFF"
+                app:layout_constraintEnd_toEndOf="@+id/palette"
+                app:layout_constraintHorizontal_bias="0.168"
+                app:layout_constraintStart_toStartOf="@+id/palette"
+                app:layout_constraintTop_toTopOf="@+id/palette" />
+
+            <Button
+                android:id="@+id/palette2"
+                android:layout_width="152dp"
+                android:layout_height="322dp"
+                android:layout_marginTop="100dp"
+                android:background="#00FFFFFF"
+                android:backgroundTint="#00FFFFFF"
+                app:layout_constraintEnd_toEndOf="@+id/palette"
+                app:layout_constraintHorizontal_bias="0.825"
+                app:layout_constraintStart_toStartOf="@+id/palette"
+                app:layout_constraintTop_toTopOf="@+id/palette" />
+
+            <Button
+                android:id="@+id/tipsButton"
+                android:layout_width="214dp"
+                android:layout_height="49dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="30dp"
+                android:text="Makeup Guide and Tips"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.454"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/download_button"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/generatorbtn"
+                android:layout_width="214dp"
+                android:layout_height="49dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="30dp"
+                android:text="Color Palette Generator"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.454"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tipsButton"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/download_button"
+                android:layout_width="146dp"
+                android:layout_height="49dp"
+                android:layout_marginBottom="16dp"
+                android:drawableLeft="@drawable/download"
+                android:drawablePadding="8dp"
+                android:text="Download"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.454"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/palette"
+                app:layout_constraintVertical_bias="0.335" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#877bb6"
+        android:foregroundGravity="center_horizontal"
+        android:src="@drawable/baseline_add_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="40dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
