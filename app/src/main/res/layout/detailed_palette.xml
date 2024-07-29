@@ -94,48 +94,6 @@
                 app:layout_constraintStart_toStartOf="@+id/palette"
                 app:layout_constraintTop_toTopOf="@+id/palette" />
 
-            <Button
-                android:id="@+id/tipsButton"
-                android:layout_width="214dp"
-                android:layout_height="49dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="30dp"
-                android:text="Makeup Guide and Tips"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.454"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/download_button"
-                app:layout_constraintVertical_bias="0.0" />
-
-            <Button
-                android:id="@+id/generatorbtn"
-                android:layout_width="214dp"
-                android:layout_height="49dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="30dp"
-                android:text="Color Palette Generator"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.454"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tipsButton"
-                app:layout_constraintVertical_bias="0.0" />
-
-            <Button
-                android:id="@+id/download_button"
-                android:layout_width="146dp"
-                android:layout_height="49dp"
-                android:layout_marginBottom="16dp"
-                android:drawableLeft="@drawable/download"
-                android:drawablePadding="8dp"
-                android:text="Download"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.454"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/palette"
-                app:layout_constraintVertical_bias="0.335" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -150,7 +108,8 @@
         android:src="@drawable/baseline_add_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:maxImageSize="40dp" />
+        app:maxImageSize="40dp"
+        android:tint="@color/white"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

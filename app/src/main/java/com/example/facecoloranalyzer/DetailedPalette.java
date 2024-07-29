@@ -45,7 +45,6 @@ public class DetailedPalette extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detailed_palette);
-
         // Receive array from intent
         String[] bestColorsArray = getIntent().getStringArrayExtra("BEST_COLORS");
         String result = getIntent().getStringExtra("SEASON");
@@ -59,9 +58,6 @@ public class DetailedPalette extends AppCompatActivity {
 
         Button palette1 = findViewById(R.id.palette1);
         Button palette2 = findViewById(R.id.palette2);
-        Button tips = findViewById(R.id.tipsButton);
-        Button generatorBtn = findViewById(R.id.generatorbtn);
-        Button downloadButton = findViewById(R.id.download_button);
         FloatingActionButton fab = findViewById(R.id.fab);
 
         String resourceName = getResources().getResourceEntryName(imageResourceId);
@@ -84,37 +80,6 @@ public class DetailedPalette extends AppCompatActivity {
                 int drawableId = getResources().getIdentifier(newResourceName, "drawable", getPackageName());
                 if (drawableId != 0) {
                     palette.setImageResource(drawableId);
-                }
-            }
-        });
-
-        tips.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetailedPalette.this, tips.class);
-                startActivity(intent);
-            }
-        });
-
-        generatorBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetailedPalette.this, Generator.class);
-                intent.putExtra("BEST_COLORS", bestColorsArray);
-                intent.putExtra("SEASON", result);
-                startActivity(intent);
-            }
-        });
-
-
-
-        downloadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (checkPermission()) {
-                    captureAndSaveScreenshot();
-                } else {
-                    requestPermission();
                 }
             }
         });
@@ -145,7 +110,7 @@ public class DetailedPalette extends AppCompatActivity {
 
     private void captureAndSaveScreenshot() {
         ScrollView scrollView = findViewById(R.id.scrollView);
-        Button downloadButton = findViewById(R.id.download_button);
+        LinearLayout downloadButton = findViewById(R.id.download);
 
         downloadButton.setVisibility(View.GONE);
 
@@ -221,33 +186,42 @@ public class DetailedPalette extends AppCompatActivity {
         LinearLayout pGenerator = dialog.findViewById(R.id.paletteGenerator);
         ImageView cancelButton = dialog.findViewById(R.id.cancelButton);
 
+        // Receive array from intent
+        String[] bestColorsArray = getIntent().getStringArrayExtra("BEST_COLORS");
+        String result = getIntent().getStringExtra("SEASON");
+
+
+
         download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                dialog.dismiss();
-                Toast.makeText(DetailedPalette.this,"Download button is clicked",Toast.LENGTH_SHORT).show();
-
+                if (checkPermission()) {
+                    dialog.dismiss();
+                    captureAndSaveScreenshot();
+                } else {
+                    dialog.dismiss();
+                    requestPermission();
+                }
             }
         });
 
         guidesAndTips.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 dialog.dismiss();
-                Toast.makeText(DetailedPalette.this,"Button is Clicked",Toast.LENGTH_SHORT).show();
-
+                Intent intent = new Intent(DetailedPalette.this, tips.class);
+                startActivity(intent);
             }
         });
 
         pGenerator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 dialog.dismiss();
-                Toast.makeText(DetailedPalette.this,"Palette Generator is Clicked",Toast.LENGTH_SHORT).show();
-
+                Intent intent = new Intent(DetailedPalette.this, Generator.class);
+                intent.putExtra("BEST_COLORS", bestColorsArray);
+                intent.putExtra("SEASON", result);
+                startActivity(intent);
             }
         });
 

@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int CAMERA_PERMISSION_CODE = 102;
     private static final int STORAGE_PERMISSION_CODE = 103;
-    private static final String SERVER_IP = "172.19.200.159"; // Replace with your server IP
+    private static final String SERVER_IP = "192.168.100.72"; // Replace with your server IP
     private static final int SERVER_PORT = 5000;
 
     private ImageView imageView;
