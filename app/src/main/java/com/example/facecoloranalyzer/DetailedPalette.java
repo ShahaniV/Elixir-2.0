@@ -184,6 +184,7 @@ public class DetailedPalette extends AppCompatActivity {
         LinearLayout download = dialog.findViewById(R.id.download);
         LinearLayout guidesAndTips = dialog.findViewById(R.id.guidesAndTips);
         LinearLayout pGenerator = dialog.findViewById(R.id.paletteGenerator);
+        LinearLayout TryonButton = dialog.findViewById(R.id.virtualTryOn);
         ImageView cancelButton = dialog.findViewById(R.id.cancelButton);
 
         // Receive array from intent
@@ -221,6 +222,15 @@ public class DetailedPalette extends AppCompatActivity {
                 Intent intent = new Intent(DetailedPalette.this, Generator.class);
                 intent.putExtra("BEST_COLORS", bestColorsArray);
                 intent.putExtra("SEASON", result);
+                startActivity(intent);
+            }
+        });
+
+        TryonButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Intent intent = new Intent(DetailedPalette.this, VirtualTryOn.class);
                 startActivity(intent);
             }
         });

@@ -256,6 +256,8 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try {
                     Socket socket = new Socket(SERVER_IP, SERVER_PORT);
+                    SocketManager.getInstance().setSocket(socket); // Store the socket in SocketManager
+
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
                     byte[] imageData = byteArrayOutputStream.toByteArray();
@@ -272,7 +274,6 @@ public class MainActivity extends AppCompatActivity {
                     int bytesRead = inputStreamReader.read(buffer);
                     final String seasonal = new String(buffer, 0, bytesRead);
 
-
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -284,8 +285,6 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(resultIntent);
                         }
                     });
-
-                    socket.close();
                 } catch (IOException e) {
                     Log.e("MainActivity", "Error sending image to server", e);
                     runOnUiThread(new Runnable() {

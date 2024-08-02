@@ -94,7 +94,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="10dp"
-        android:paddingBottom="30dp">
+        >
 
 
         <ImageView
@@ -106,6 +106,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Color Palette Generator"
+            android:textColor="#967bb6"
+            android:layout_marginLeft="30dp"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/virtualTryOn"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:paddingBottom="30dp">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_auto_fix_high_24"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Virtual Try On"
             android:textColor="#967bb6"
             android:layout_marginLeft="30dp"
             android:textSize="16sp"/>
