@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
 
         progressDialog.setOnDismissListener(dialog -> handler.removeCallbacks(imageSwitcher));
 
-
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,6 +114,22 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // Initialize the socket connection
+        initializeSocketConnection();
+    }
+
+    private void initializeSocketConnection() {
+        new Thread(() -> {
+            try {
+                Log.d("MainActivity", "Attempting to connect to server...");
+                Socket socket = new Socket(SERVER_IP, SERVER_PORT);
+                SocketManager.getInstance().setSocket(socket);
+                Log.d("MainActivity", "Socket connected: " + socket.isConnected());
+            } catch (IOException e) {
+                Log.e("MainActivity", "Error initializing socket connection", e);
+            }
+        }).start();
     }
 
     private void uploadImageFromGallery() {
@@ -255,8 +270,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Socket socket = new Socket(SERVER_IP, SERVER_PORT);
-                    SocketManager.getInstance().setSocket(socket); // Store the socket in SocketManager
+                    Socket socket = SocketManager.getInstance().getSocket();
+                    if (socket == null || !socket.isConnected()) {
+                        socket = new Socket(SERVER_IP, SERVER_PORT);
+                        SocketManager.getInstance().setSocket(socket);
+                    }
 
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
@@ -280,7 +298,6 @@ public class MainActivity extends AppCompatActivity {
                             progressDialog.dismiss();
                             Intent resultIntent = new Intent(MainActivity.this, Output.class);
                             resultIntent.putExtra("imageUri", imageUri.toString());
-                            //resultIntent.putExtra("RESULT", result);
                             resultIntent.putExtra("SEASONAL", seasonal);
                             startActivity(resultIntent);
                         }

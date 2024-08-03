@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -24,11 +23,10 @@ import java.net.Socket;
 
 public class VirtualTryOn extends AppCompatActivity {
 
-    private String hairColor;
-    private String eyeshadowColor;
-    private String blushColor;
-    private String lipsColor;
-    private String clothesColor;
+    private String hairColor = "000000";       // Default BGR color 0,0,0
+    private String eyeshadowColor = "000000";  // Default BGR color 0,0,0
+    private String blushColor = "000000";      // Default BGR color 0,0,0
+    private String lipsColor = "000000";       // Default BGR color 0,0,0
 
     private ImageView virtualMakeupImageView;
     private ProgressDialog progressDialog;
@@ -48,7 +46,6 @@ public class VirtualTryOn extends AppCompatActivity {
         Button btnEyeshadow = findViewById(R.id.btnEyeshadow);
         Button btnBlush = findViewById(R.id.btnBlush);
         Button btnLips = findViewById(R.id.btnLips);
-        Button btnClothes = findViewById(R.id.btnClothes);
         Button btnVirtualMakeup = findViewById(R.id.btnVirtualMakeup);
         virtualMakeupImageView = findViewById(R.id.virtualMakeupImageView);
 
@@ -60,23 +57,25 @@ public class VirtualTryOn extends AppCompatActivity {
         btnEyeshadow.setOnClickListener(view -> updateColor(btnEyeshadow));
         btnBlush.setOnClickListener(view -> updateColor(btnBlush));
         btnLips.setOnClickListener(view -> updateColor(btnLips));
-        btnClothes.setOnClickListener(view -> updateColor(btnClothes));
         btnVirtualMakeup.setOnClickListener(view -> sendVirtualMakeupRequest());
     }
 
     private void updateColor(Button button) {
-        String color = Integer.toHexString(((ColorDrawable) button.getBackground()).getColor());
-        int id = button.getId();
-        if (id == R.id.btnHair) {
-            hairColor = color;
-        } else if (id == R.id.btnEyeshadow) {
-            eyeshadowColor = color;
-        } else if (id == R.id.btnBlush) {
-            blushColor = color;
-        } else if (id == R.id.btnLips) {
-            lipsColor = color;
-        } else if (id == R.id.btnClothes) {
-            clothesColor = color;
+        ColorDrawable buttonBackground = (ColorDrawable) button.getBackground();
+        if (buttonBackground != null) {
+            String color = Integer.toHexString(buttonBackground.getColor());
+            int id = button.getId();
+            if (id == R.id.btnHair) {
+                hairColor = color;
+            } else if (id == R.id.btnEyeshadow) {
+                eyeshadowColor = color;
+            } else if (id == R.id.btnBlush) {
+                blushColor = color;
+            } else if (id == R.id.btnLips) {
+                lipsColor = color;
+            }
+        } else {
+            runOnUiThread(() -> Toast.makeText(this, "Button background is not a color", Toast.LENGTH_SHORT).show());
         }
     }
 
@@ -87,40 +86,37 @@ public class VirtualTryOn extends AppCompatActivity {
                 Socket socket = SocketManager.getInstance().getSocket(); // Get the existing socket
 
                 if (socket != null && socket.isConnected()) {
-                    Log.d("VirtualTryOn", "Socket is connected");
+                    runOnUiThread(() -> Toast.makeText(this, "Socket is connected", Toast.LENGTH_SHORT).show());
 
-                    // Send the "VirtualMakeup" string to the server
+                    // Send the integer value 283 to the server
                     DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                    dataOutputStream.writeUTF("VirtualMakeup");
+                    dataOutputStream.writeInt(283);
                     dataOutputStream.flush();
-                    Log.d("VirtualTryOn", "Sent VirtualMakeup request to the server");
+                    runOnUiThread(() -> Toast.makeText(this, "Sent VirtualMakeup request to the server", Toast.LENGTH_SHORT).show());
 
                     // Send the color data to the server
                     sendColorData(dataOutputStream, blushColor);
                     sendColorData(dataOutputStream, eyeshadowColor);
                     sendColorData(dataOutputStream, hairColor);
-                    sendColorData(dataOutputStream, lipsColor);
+                    sendColorData(dataOutputStream, lipsColor);  // Ensure lipsColor is also sent
+                    runOnUiThread(() -> Toast.makeText(this, "Sent all color data", Toast.LENGTH_SHORT).show());
 
                     // Receive the length of the image data
                     DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
                     int length = dataInputStream.readInt();
-                    Log.d("VirtualTryOn", "Received image length: " + length);
 
                     if (length > 0) {
                         // Receive the image data
                         byte[] imageData = new byte[length];
                         dataInputStream.readFully(imageData);
-                        Log.d("VirtualTryOn", "Received image data of length: " + imageData.length);
 
                         // Convert the byte data to a Bitmap
                         Bitmap bitmap = BitmapFactory.decodeByteArray(imageData, 0, length);
-                        Log.d("VirtualTryOn", "Converted image data to Bitmap");
 
                         // Update the UI with the received image
                         runOnUiThread(() -> {
                             progressDialog.dismiss();
                             virtualMakeupImageView.setImageBitmap(bitmap);
-                            Log.d("VirtualTryOn", "Displayed virtual makeup image");
                             new AlertDialog.Builder(VirtualTryOn.this)
                                     .setTitle("Success")
                                     .setMessage("Successfully received an image from the server.")
@@ -128,15 +124,13 @@ public class VirtualTryOn extends AppCompatActivity {
                                     .show();
                         });
                     } else {
-                        Log.e("VirtualTryOn", "Received image length is 0 or negative");
                         throw new IOException("Received image length is 0 or negative.");
                     }
                 } else {
-                    Log.e("VirtualTryOn", "Socket is null or not connected");
+                    runOnUiThread(() -> Toast.makeText(VirtualTryOn.this, "Socket is null or not connected", Toast.LENGTH_SHORT).show());
                     throw new IOException("Socket is null or not connected");
                 }
             } catch (Exception e) {
-                Log.e("VirtualTryOn", "Error in virtual makeup request", e);
                 String errorMessage = e.getMessage() != null ? e.getMessage() : "Unknown error";
                 runOnUiThread(() -> {
                     progressDialog.dismiss();
@@ -147,11 +141,27 @@ public class VirtualTryOn extends AppCompatActivity {
     }
 
     private void sendColorData(DataOutputStream dataOutputStream, String color) throws IOException {
-        int colorInt = (int) Long.parseLong(color, 16);
-        int blue = (colorInt) & 0xFF;
-        int green = (colorInt >> 8) & 0xFF;
-        int red = (colorInt >> 16) & 0xFF;
-        dataOutputStream.writeUTF(blue + "," + green + "," + red);
-        dataOutputStream.flush();
+        if (color != null && color.length() == 6) {
+            // Parse the color string (assumed to be in hexadecimal format) into an integer
+            int colorInt = (int) Long.parseLong(color, 16);
+
+            // Extract the blue, green, and red components from the integer
+            int blue = (colorInt) & 0xFF;
+            int green = (colorInt >> 8) & 0xFF;
+            int red = (colorInt >> 16) & 0xFF;
+
+            // Format the color components as a string, separated by commas
+            String colorString = blue + "," + green + "," + red;
+
+            // Send the formatted color string to the server
+            dataOutputStream.writeUTF(colorString);  // Use writeUTF to ensure proper string encoding
+            dataOutputStream.flush();
+
+            // Display a toast message to indicate the color data was sent
+            runOnUiThread(() -> Toast.makeText(this, "Sent color data: " + colorString, Toast.LENGTH_SHORT).show());
+        } else {
+            // Display an error message if the color is null or has an invalid length
+            runOnUiThread(() -> Toast.makeText(this, "Color is null or invalid", Toast.LENGTH_SHORT).show());
+        }
     }
 }
